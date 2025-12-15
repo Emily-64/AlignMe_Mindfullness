@@ -62,58 +62,100 @@ List<SoundSession> sampleRelax = [
   SoundSession('r2', 'Mountaineers', 'By: Summit Sounds', '15 min',
       'assets/images/mountain.png', 'assets/audio/mountain.mp3'),
 
-  SoundSession('r3', 'Lovely Deserts', 'By: Dune Studio', '39 min',
-      'assets/images/desert.png', 'assets/audio/desert.mp3'),
+  SoundSession('r3', 'Lovely Deserts', 'By: Dune Studio', '20 min',
+      'assets/images/relax.png', 'assets/audio/desert.mp3'),
 
-  SoundSession('r4', 'The Hill Sides', 'By: Hillside Audio', '50 min',
+  SoundSession('r4', 'The Hill Sides', 'By: Hillside Audio', '10 min',
       'assets/images/hill.png', 'assets/audio/hills2.mp3'),
 ];
 
 List<SoundSession> sampleCalm = [
   SoundSession('c1', 'Morning Calm', 'By: Gentle Waves', '10 min',
-      'assets/images/forest.png', 'assets/audio/calm.mp3'),
+      'assets/images/mrng.png', 'assets/audio/calm.mp3'),
 
   SoundSession('c2', 'Soft Rain', 'By: Cozy Ambience', '15 min',
-      'assets/images/mountain.png', 'assets/audio/rain3.mp3'),
+      'assets/images/rain.png', 'assets/audio/rain3.mp3'),
 ];
 
 
 List<SoundSession> sampleFocus = [
   SoundSession('f1', 'Concentration Flow', 'By: Focus Lab', '25 min',
-      'assets/images/hill.png', 'assets/audio/sleep3.mp3'),
+      'assets/images/flow.png', 'assets/audio/sleep3.mp3'),
 
-  SoundSession('f2', 'Alpha Tones', 'By: Brainwave Co', '30 min',
-      'assets/images/desert.png', 'assets/audio/alpha.mp3'),
+  SoundSession('f2', 'Alpha Tones', 'By: Brainwave Co', '20 min',
+      'assets/images/focus.png', 'assets/audio/alpha.mp3'),
 ];
 
 
 List<SoundSession> sampleAnxious = [
   SoundSession('a1', 'Quick Reset', 'By: Calm Tools', '5 min',
-      'assets/images/forest.png', 'assets/audio/meditation2.mp3'),
+      'assets/images/relax3.png', 'assets/audio/meditation2.mp3'),
 
   SoundSession('a2', 'Safe Space', 'By: Guided Peace', '12 min',
-      'assets/images/mountain.png', 'assets/audio/calm.mp3'),
+      'assets/images/relax4.png', 'assets/audio/calm.mp3'),
 ];
 
 List<Map<String, String>> youtubeSessions = [
-  {'title': 'Yoga for Stress Relief', 'url': 'https://www.youtube.com/watch?v=4pKly2JojMw'},
-  {'title': 'Breathing for Anxiety', 'url': 'https://www.youtube.com/watch?v=inpok4MKVLM'},
+  {'title': 'Yoga for Stress Relief', 'url': 'https://www.youtube.com/watch?v=qiKJRoX_2uo'},
+  {'title': 'Breathing for Anxiety', 'url': 'https://www.youtube.com/watch?v=odADwWzHR24'},
   {'title': 'Guided Calm Meditation', 'url': 'https://www.youtube.com/watch?v=ZToicYcHIOU'},
 ];
 
-List<Map<String, String>> stressActivities = [
-  {'title': '5-4-3-2-1 Grounding', 'detail': 'Name 5 things you see, 4 you can touch, 3 you hear, 2 you can smell, 1 you can taste.'},
-  {'title': 'Visualization Escape', 'detail': 'Close your eyes and imagine a safe, calm place.'},
-  {'title': 'Progressive Muscle Relaxation', 'detail': 'Tense and relax muscle groups from toes to head.'},
-  {'title': 'EFT Tapping', 'detail': 'Tap on meridian points while breathing slowly.'},
+
+List<Map<String, dynamic>> stressActivities = [
+  {
+    'title': '5-4-3-2-1 Grounding',
+    'intro': 'Bring your attention back to the present moment.',
+    'steps': [
+      'Name 5 things you can see',
+      'Name 4 things you can touch',
+      'Name 3 things you can hear',
+      'Name 2 things you can smell',
+      'Name 1 thing you can taste',
+    ],
+  },
+  {
+    'title': 'Visualization Escape',
+    'intro': 'Calm your mind by imagining a safe place.',
+    'steps': [
+      'Close your eyes gently',
+      'Imagine a calm, safe place',
+      'Notice the colors and light',
+      'Listen to the sounds there',
+      'Stay for a few slow breaths',
+    ],
+  },
+  {
+    'title': 'Progressive Muscle Relaxation',
+    'intro': 'Release physical tension from your body.',
+    'steps': [
+      'Tense your feet for 5 seconds',
+      'Release and relax',
+      'Move upward to legs and hands',
+      'Relax shoulders and neck',
+      'Finish with slow breathing',
+    ],
+  },
+  {
+    'title': 'EFT Tapping',
+    'intro': 'Reduce stress by tapping meridian points.',
+    'steps': [
+      'Tap gently on eyebrow point',
+      'Tap side of eye',
+      'Tap collarbone',
+      'Breathe slowly while tapping',
+      'Repeat until calmer',
+    ],
+  },
 ];
+
 List<SoundSession> sampleSleep = [
   SoundSession(
     's1',
     'Deep Sleep Waves',
     'By: Night Calm',
     '15 min',
-    'assets/images/forest.png',
+    'assets/images/sleep.png',
     'assets/audio/sleep1.mp3',
   ),
   SoundSession(
@@ -121,7 +163,7 @@ List<SoundSession> sampleSleep = [
     'Moonlight Rain',
     'By: Dream Sounds',
     '20 min',
-    'assets/images/mountain.png',
+    'assets/images/sleep1.png',
     'assets/audio/sleep2.mp3',
   ),
   SoundSession(
@@ -129,7 +171,7 @@ List<SoundSession> sampleSleep = [
     'Soft Piano Night',
     'By: Sleep Studio',
     '30 min',
-    'assets/images/hill.png',
+    'assets/images/sleep2.png',
     'assets/audio/sleep3.mp3',
   ),
 ];
@@ -451,28 +493,28 @@ class _HomeState extends State<HomePage> {
 class RelaxSoundsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MoodListPage(title: 'Relax Sounds', banner: 'assets/images/relax_banner.png', sessions: sampleRelax);
+    return MoodListPage(title: 'Relax Sounds', banner: 'assets/images/relax5.png', sessions: sampleRelax);
   }
 }
 
 class CalmMeditationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MoodListPage(title: 'Calming Sessions', banner: 'assets/images/relax_banner.png', sessions: sampleCalm);
+    return MoodListPage(title: 'Calming Sessions', banner: 'assets/images/relax5.png', sessions: sampleCalm);
   }
 }
 
 class FocusMusicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MoodListPage(title: 'Focus Music', banner: 'assets/images/relax_banner.png', sessions: sampleFocus);
+    return MoodListPage(title: 'Focus Music', banner: 'assets/images/relax5.png', sessions: sampleFocus);
   }
 }
 
 class AnxietyReliefPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MoodListPage(title: 'Anxiety Relief', banner: 'assets/images/relax_banner.png', sessions: sampleAnxious);
+    return MoodListPage(title: 'Anxiety Relief', banner: 'assets/images/relax5.png', sessions: sampleAnxious);
   }
 }
 
@@ -809,11 +851,8 @@ class ToolsPage extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Optional: extra text or links
-            const Text('Quick Tools', style: TextStyle(color: Colors.white70)),
-            const SizedBox(height: 8),
-            const Text('Use the Breathing exercise to calm your nervous system, or open YouTube Sessions for guided videos.', style: TextStyle(color: Colors.white54)),
-            const SizedBox(height: 20),
+            
+            
           ],
         ),
       ),
@@ -908,34 +947,94 @@ class _BreathingExerciseState extends State<BreathingExercisePage> {
     );
   }
 }
+
 class StressReliefPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientScaffold(
-      appBar: buildPremiumAppBar(context, isHome: false),
-      child: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemCount: stressActivities.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (context, i) {
-          final a = stressActivities[i];
-          return Card(
-            color: Colors.white12,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            child: ListTile(
-              title: Text(a['title']!, style: const TextStyle(color: Colors.white)),
-              trailing: const Icon(Icons.chevron_right, color: Colors.white70),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => StressDetailPage(a['title']!, a['detail']!),
+      child: SafeArea(
+        child: Column(
+          children: [
+            // ---------- HEADER ----------
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Back button
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   ),
-                );
-              },
+
+                  // Lotus icon (perfectly centered)
+                  const Icon(
+                    Icons.spa,
+                    color: Colors.white,
+                    size: 26,
+                  ),
+                ],
+              ),
             ),
-          );
-        },
+
+            const SizedBox(height: 8),
+
+            // ---------- LIST ----------
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: stressActivities.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final activity = stressActivities[index];
+
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white10,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.self_improvement,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        activity['title'],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      subtitle: Text(
+                        activity['intro'],
+                        style: const TextStyle(color: Colors.white70),
+                      ),
+                      trailing: const Icon(
+                        Icons.chevron_right,
+                        color: Colors.white70,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => StressDetailPage(
+                              title: activity['title'],
+                              intro: activity['intro'],
+                              steps: List<String>.from(activity['steps']),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -943,22 +1042,114 @@ class StressReliefPage extends StatelessWidget {
 
 
 class StressDetailPage extends StatelessWidget {
-  final String title, detail;
-  StressDetailPage(this.title, this.detail);
+  final String title;
+  final String intro;
+  final List<String> steps;
+
+  const StressDetailPage({
+    super.key,
+    required this.title,
+    required this.intro,
+    required this.steps,
+  });
+
   @override
   Widget build(BuildContext context) {
     return GradientScaffold(
-      appBar: buildPremiumAppBar(context, isHome: false),
-      child: Padding(padding: const EdgeInsets.all(18), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
-        const SizedBox(height: 12),
-        Text(detail, style: const TextStyle(color: Colors.white70)),
-        const Spacer(),
-        ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('Done')),
-      ])),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const Icon(Icons.spa, color: Colors.white, size: 26),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Title
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // Intro
+              Text(
+                intro,
+                style: const TextStyle(color: Colors.white70),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Steps
+              Expanded(
+                child: ListView.separated(
+                  itemCount: steps.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  itemBuilder: (context, i) {
+                    return _stepCard('${i + 1}. ${steps[i]}');
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Done button
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 14,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text('Done'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _stepCard(String text) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white10,
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
     );
   }
 }
+
 
 class YouTubeSessionsPage extends StatelessWidget {
   @override
@@ -987,12 +1178,17 @@ class YouTubeSessionsPage extends StatelessWidget {
   }
 
   Future<void> _openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      // no-op or show snackbar
-    }
+  final uri = Uri.parse(url);
+
+  if (!await launchUrl(
+    uri,
+    mode: LaunchMode.externalApplication,
+  )) {
+    // Optional: show error
+    debugPrint('Could not launch $url');
   }
+}
+
 }
 
 class SleepMusicPage extends StatelessWidget {
