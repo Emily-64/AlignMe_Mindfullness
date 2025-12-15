@@ -13,8 +13,11 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
-  # Added dependency for YouTube links
+  # For opening YouTube links
   url_launcher: ^6.3.0
+
+  # ✅ For audio playback (Meditation music)
+  just_audio: ^0.9.38
 
 dev_dependencies:
   flutter_test:
@@ -23,9 +26,8 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
-
   uses-material-design: true
 
-  # Add your assets folder for images, thumbnails, lotus icon, etc.
   assets:
     - assets/images/
+    - assets/audio/

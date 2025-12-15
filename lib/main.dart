@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:just_audio/just_audio.dart';
 
 void main() => runApp(AlignMeFinalApp());
 
@@ -40,31 +41,58 @@ class AlignMeFinalApp extends StatelessWidget {
 /* ---------------------------
    Data models & sample data
 ----------------------------*/
+
 class SoundSession {
-  final String id, title, subtitle, duration, artwork;
-  SoundSession(this.id, this.title, this.subtitle, this.duration, this.artwork);
+  final String id, title, subtitle, duration, artwork, audio;
+
+  SoundSession(
+    this.id,
+    this.title,
+    this.subtitle,
+    this.duration,
+    this.artwork,
+    this.audio, // ✅ NEW
+  );
 }
 
 List<SoundSession> sampleRelax = [
-  SoundSession('r1', 'Painting Forest', 'By: Painting with Passion', '20 min', 'assets/images/forest.png'),
-  SoundSession('r2', 'Mountaineers', 'By: Summit Sounds', '15 min', 'assets/images/mountain.png'),
-  SoundSession('r3', 'Lovely Deserts', 'By: Dune Studio', '39 min', 'assets/images/desert.png'),
-  SoundSession('r4', 'The Hill Sides', 'By: Hillside Audio', '50 min', 'assets/images/hill.png'),
+  SoundSession('r1', 'Painting Forest', 'By: Painting with Passion', '20 min',
+      'assets/images/forest.png', 'assets/audio/forest2.mp3'),
+
+  SoundSession('r2', 'Mountaineers', 'By: Summit Sounds', '15 min',
+      'assets/images/mountain.png', 'assets/audio/mountain.mp3'),
+
+  SoundSession('r3', 'Lovely Deserts', 'By: Dune Studio', '39 min',
+      'assets/images/desert.png', 'assets/audio/desert.mp3'),
+
+  SoundSession('r4', 'The Hill Sides', 'By: Hillside Audio', '50 min',
+      'assets/images/hill.png', 'assets/audio/hills2.mp3'),
 ];
 
 List<SoundSession> sampleCalm = [
-  SoundSession('c1', 'Morning Calm', 'By: Gentle Waves', '10 min', 'assets/images/forest.png'),
-  SoundSession('c2', 'Soft Rain', 'By: Cozy Ambience', '15 min', 'assets/images/mountain.png'),
+  SoundSession('c1', 'Morning Calm', 'By: Gentle Waves', '10 min',
+      'assets/images/forest.png', 'assets/audio/calm.mp3'),
+
+  SoundSession('c2', 'Soft Rain', 'By: Cozy Ambience', '15 min',
+      'assets/images/mountain.png', 'assets/audio/rain3.mp3'),
 ];
+
 
 List<SoundSession> sampleFocus = [
-  SoundSession('f1', 'Concentration Flow', 'By: Focus Lab', '25 min', 'assets/images/hill.png'),
-  SoundSession('f2', 'Alpha Tones', 'By: Brainwave Co', '30 min', 'assets/images/desert.png'),
+  SoundSession('f1', 'Concentration Flow', 'By: Focus Lab', '25 min',
+      'assets/images/hill.png', 'assets/audio/sleep3.mp3'),
+
+  SoundSession('f2', 'Alpha Tones', 'By: Brainwave Co', '30 min',
+      'assets/images/desert.png', 'assets/audio/alpha.mp3'),
 ];
 
+
 List<SoundSession> sampleAnxious = [
-  SoundSession('a1', 'Quick Reset', 'By: Calm Tools', '5 min', 'assets/images/forest.png'),
-  SoundSession('a2', 'Safe Space', 'By: Guided Peace', '12 min', 'assets/images/mountain.png'),
+  SoundSession('a1', 'Quick Reset', 'By: Calm Tools', '5 min',
+      'assets/images/forest.png', 'assets/audio/meditation2.mp3'),
+
+  SoundSession('a2', 'Safe Space', 'By: Guided Peace', '12 min',
+      'assets/images/mountain.png', 'assets/audio/calm.mp3'),
 ];
 
 List<Map<String, String>> youtubeSessions = [
@@ -78,6 +106,32 @@ List<Map<String, String>> stressActivities = [
   {'title': 'Visualization Escape', 'detail': 'Close your eyes and imagine a safe, calm place.'},
   {'title': 'Progressive Muscle Relaxation', 'detail': 'Tense and relax muscle groups from toes to head.'},
   {'title': 'EFT Tapping', 'detail': 'Tap on meridian points while breathing slowly.'},
+];
+List<SoundSession> sampleSleep = [
+  SoundSession(
+    's1',
+    'Deep Sleep Waves',
+    'By: Night Calm',
+    '15 min',
+    'assets/images/forest.png',
+    'assets/audio/sleep1.mp3',
+  ),
+  SoundSession(
+    's2',
+    'Moonlight Rain',
+    'By: Dream Sounds',
+    '20 min',
+    'assets/images/mountain.png',
+    'assets/audio/sleep2.mp3',
+  ),
+  SoundSession(
+    's3',
+    'Soft Piano Night',
+    'By: Sleep Studio',
+    '30 min',
+    'assets/images/hill.png',
+    'assets/audio/sleep3.mp3',
+  ),
 ];
 
 /* ---------------------------
@@ -185,18 +239,50 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return GradientScaffold(
-      appBar: buildPremiumAppBar(context, isHome: true),
+  child: SafeArea(
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(20, 6, 20, 20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(20, 6, 20, 14),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(height: 6),
-              const Text('Your mind deserves a moment of quiet.', style: TextStyle(color: Colors.white70)),
-              const SizedBox(height: 8),
-              const Text('How are you feeling today ?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-              const SizedBox(height: 12),
+          // ---------- HEADER ----------
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+                const Icon(Icons.spa, color: Colors.white, size: 28),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 6),
+          const Text(
+            'Your mind deserves a moment of quiet.',
+            style: TextStyle(color: Colors.white70),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'How are you feeling today ?',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+          // rest of your UI continues…
+
+
+              // ---------- MOODS ----------
               SizedBox(
                 height: 86,
                 child: ListView.separated(
@@ -206,88 +292,122 @@ class _HomeState extends State<HomePage> {
                   itemBuilder: (_, i) {
                     final m = moods[i];
                     final isSel = m == selectedMood;
+
                     return GestureDetector(
                       onTap: () {
                         setState(() => selectedMood = m);
-                        if (m == 'Relax') Navigator.push(context, MaterialPageRoute(builder: (_) => RelaxSoundsPage()));
-                        if (m == 'Calm') Navigator.push(context, MaterialPageRoute(builder: (_) => CalmMeditationPage()));
-                        if (m == 'Focus') Navigator.push(context, MaterialPageRoute(builder: (_) => FocusMusicPage()));
-                        if (m == 'Anxious') Navigator.push(context, MaterialPageRoute(builder: (_) => AnxietyReliefPage()));
-                        
+                        if (m == 'Relax') {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => RelaxSoundsPage()));
+                        } else if (m == 'Calm') {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => CalmMeditationPage()));
+                        } else if (m == 'Focus') {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => FocusMusicPage()));
+                        } else if (m == 'Anxious') {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => AnxietyReliefPage()));
+                        }
                       },
                       child: Container(
                         width: 92,
                         padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(color: isSel ? Colors.white24 : Colors.white12, borderRadius: BorderRadius.circular(25)),
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          // Use lotus-style icons as requested (Calm: smile-like, Relax: spa/leaf, Focus: target, Anxious: meditation)
-                          Icon(_moodIcon(m), color: Colors.white, size: 26),
-                          const SizedBox(height: 6),
-                          Text(m, style: const TextStyle(fontSize: 12, color: Colors.white)),
-                        ]),
+                        decoration: BoxDecoration(
+                          color: isSel ? Colors.white24 : Colors.white12,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(_moodIcon(m), color: Colors.white, size: 26),
+                            const SizedBox(height: 6),
+                            Text(m, style: const TextStyle(fontSize: 12, color: Colors.white)),
+                          ],
+                        ),
                       ),
                     );
                   },
                 ),
               ),
-            ]),
-          ),
 
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 6, 16, 12),
-              child: ListView(
+              const SizedBox(height: 24),
+
+              // ---------- RECOMMENDED ----------
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                    const Text('Recommended Sessions', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                    TextButton(onPressed: () {}, child: const Text('See all')),
-                  ]),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 130,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: sampleRelax.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 12),
-                      itemBuilder: (_, idx) {
-                        final s = sampleRelax[idx];
-                        return GestureDetector(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PlayerPage(s))),
-                          child: Container(
-                            width: 280,
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.circular(cardRadius)),
-                            child: Row(children: [
-                              Artwork(s.artwork, radius: 38),
-                              const SizedBox(width: 12),
-                              Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                Text(s.title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                                const SizedBox(height: 6),
-                                Text(s.subtitle, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                                const SizedBox(height: 6),
-                                Text(s.duration, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                              ])),
-                              const SizedBox(width: 8),
-                            ]),
-                          ),
-                        );
-                      },
-                    ),
+                  const Text(
+                    'Recommended Sessions',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
-
-                  const SizedBox(height: 20),
-                  const Text('Mindfulness Tools', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                  const SizedBox(height: 12),
-
-                  _toolCard(context, 'Breathing Exercise', 'Box breathing (4-4-4-4)', Icons.air, () => Navigator.push(context, MaterialPageRoute(builder: (_) => BreathingExercisePage()))),
-                  _toolCard(context, 'Stress Relief Activities', 'Grounding & quick practices', Icons.self_improvement, () => Navigator.push(context, MaterialPageRoute(builder: (_) => StressReliefPage()))),
-                  _toolCard(context, 'YouTube Sessions', 'Curated guided videos', Icons.play_circle_fill, () => Navigator.push(context, MaterialPageRoute(builder: (_) => YouTubeSessionsPage()))),
-                  _toolCard(context, 'Sleep Music', 'Ambient soundscapes', Icons.nightlight_round, () => Navigator.push(context, MaterialPageRoute(builder: (_) => SleepMusicPage()))),
+                  TextButton(onPressed: () {}, child: const Text('See all')),
                 ],
               ),
-            ),
+
+              const SizedBox(height: 12),
+
+              SizedBox(
+                height: 130,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: sampleRelax.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
+                  itemBuilder: (_, idx) {
+                    final s = sampleRelax[idx];
+                    return GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PlayerPage(s))),
+                      child: Container(
+                        width: 280,
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.white10,
+                          borderRadius: BorderRadius.circular(cardRadius),
+                        ),
+                        child: Row(
+                          children: [
+                            Artwork(s.artwork, radius: 38),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(s.title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                  const SizedBox(height: 6),
+                                  Text(s.subtitle, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                                  const SizedBox(height: 6),
+                                  Text(s.duration, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // ---------- TOOLS ----------
+              const Text(
+                'Mindfulness Tools',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              const SizedBox(height: 12),
+
+              _toolCard(context, 'Breathing Exercise', 'Box breathing (4-4-4-4)', Icons.air,
+                  () => Navigator.push(context, MaterialPageRoute(builder: (_) => BreathingExercisePage()))),
+
+              _toolCard(context, 'Stress Relief Activities', 'Grounding & quick practices', Icons.self_improvement,
+                  () => Navigator.push(context, MaterialPageRoute(builder: (_) => StressReliefPage()))),
+
+              _toolCard(context, 'YouTube Sessions', 'Curated guided videos', Icons.play_circle_fill,
+                  () => Navigator.push(context, MaterialPageRoute(builder: (_) => YouTubeSessionsPage()))),
+
+              _toolCard(context, 'Sleep Music', 'Ambient soundscapes', Icons.nightlight_round,
+                  () => Navigator.push(context, MaterialPageRoute(builder: (_) => SleepMusicPage()))),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -295,13 +415,13 @@ class _HomeState extends State<HomePage> {
   IconData _moodIcon(String m) {
     switch (m) {
       case 'Calm':
-        return Icons.sentiment_satisfied; // smile-like
+        return Icons.sentiment_satisfied;
       case 'Relax':
-        return Icons.spa; // lotus / leaf
+        return Icons.spa;
       case 'Focus':
-        return Icons.center_focus_strong; // focus target
+        return Icons.center_focus_strong;
       case 'Anxious':
-        return Icons.self_improvement; // meditating person
+        return Icons.self_improvement;
       default:
         return Icons.spa;
     }
@@ -321,6 +441,7 @@ class _HomeState extends State<HomePage> {
     );
   }
 }
+
 
 /* ---------------------------
    RELAX / CALM / FOCUS / ANXIETY PAGES
@@ -422,6 +543,8 @@ class MoodListPage extends StatelessWidget {
    - waveform bars
    - centered play/pause
 ----------------------------*/
+
+
 class PlayerPage extends StatefulWidget {
   final SoundSession session;
   PlayerPage(this.session);
@@ -431,71 +554,158 @@ class PlayerPage extends StatefulWidget {
 }
 
 class _PlayerPageState extends State<PlayerPage> {
+  late AudioPlayer _player;
   bool isPlaying = false;
   double progress = 0.0;
-  Timer? _timer;
 
-  void togglePlay() {
-    setState(() => isPlaying = !isPlaying);
-    if (isPlaying) {
-      _timer?.cancel();
-      _timer = Timer.periodic(const Duration(milliseconds: 300), (t) {
+  @override
+  void initState() {
+    super.initState();
+    _player = AudioPlayer();
+    _initAudio();
+  }
+
+  Future<void> _initAudio() async {
+    await _player.stop();
+    await _player.setAsset(widget.session.audio);
+
+    // Listen to progress
+    _player.positionStream.listen((pos) {
+      final dur = _player.duration;
+      if (dur != null) {
         setState(() {
-          progress += 0.01;
-          if (progress >= 1.0) {
-            progress = 1.0;
-            isPlaying = false;
-            t.cancel();
-          }
+          progress = pos.inMilliseconds / dur.inMilliseconds;
         });
+      }
+    });
+
+    // Listen to play / pause
+    _player.playerStateStream.listen((state) {
+      setState(() {
+        isPlaying = state.playing;
       });
+    });
+  }
+
+  Future<void> togglePlay() async {
+    if (isPlaying) {
+      await _player.pause();
     } else {
-      _timer?.cancel();
+      await _player.play();
     }
+  }
+
+  Future<void> seekBy(double delta) async {
+    final pos = _player.position + Duration(milliseconds: (delta * 1000).toInt());
+    await _player.seek(pos);
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _player.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final s = widget.session;
+
     return GradientScaffold(
-      appBar: buildPremiumAppBar(context, isHome: false),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
-        child: Column(children: [
-          const SizedBox(height: 8),
-          Container(
-            width: 220,
-            height: 220,
-            decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 18)]),
-            child: Artwork(s.artwork, radius: 110),
-          ),
-          const SizedBox(height: 18),
-          Text(s.title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
-          const SizedBox(height: 6),
-          Text(s.subtitle, style: const TextStyle(color: Colors.white70)),
-          const SizedBox(height: 18),
-          SizedBox(height: 72, child: Waveform(progress: progress)),
-          const SizedBox(height: 18),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            IconButton(icon: const Icon(Icons.replay_10), color: Colors.white70, onPressed: () => setState(() => progress = (progress - 0.05).clamp(0.0, 1.0))),
-            const SizedBox(width: 18),
-            ElevatedButton(
-              onPressed: togglePlay,
-              style: ElevatedButton.styleFrom(shape: const CircleBorder(), padding: const EdgeInsets.all(16)),
-              child: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 30),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
+         child: Column(
+  children: [
+    // ✅ BACK BUTTON
+    Align(
+      alignment: Alignment.centerLeft,
+      child: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () => Navigator.pop(context),
+      ),
+    ),
+
+    const SizedBox(height: 8),
+
+    // Artwork
+    Container(
+      width: 220,
+      height: 220,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: const [
+          BoxShadow(color: Colors.black54, blurRadius: 18),
+        ],
+      ),
+      child: Artwork(s.artwork, radius: 110),
+    ),
+const SizedBox(height: 18),
+
+// 🎵 MUSIC TITLE
+Text(
+  s.title,
+  textAlign: TextAlign.center,
+  style: const TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  ),
+),
+
+const SizedBox(height: 6),
+
+// 🎧 SUBTITLE / ARTIST
+Text(
+  s.subtitle,
+  textAlign: TextAlign.center,
+  style: const TextStyle(
+    color: Colors.white70,
+    fontSize: 14,
+  ),
+),
+
+
+            // Waveform (real progress)
+            SizedBox(height: 72, child: Waveform(progress: progress)),
+
+            const SizedBox(height: 18),
+
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              IconButton(
+                icon: const Icon(Icons.replay_10),
+                color: Colors.white70,
+                onPressed: () => seekBy(-10),
+              ),
+
+              const SizedBox(width: 18),
+
+              ElevatedButton(
+                onPressed: togglePlay,
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(16),
+                ),
+                child: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 30),
+              ),
+
+              const SizedBox(width: 18),
+
+              IconButton(
+                icon: const Icon(Icons.forward_10),
+                color: Colors.white70,
+                onPressed: () => seekBy(10),
+              ),
+            ]),
+
+            const SizedBox(height: 18),
+
+            LinearProgressIndicator(
+              value: progress.clamp(0.0, 1.0),
+              backgroundColor: Colors.white12,
+              color: Colors.tealAccent,
             ),
-            const SizedBox(width: 18),
-            IconButton(icon: const Icon(Icons.forward_10), color: Colors.white70, onPressed: () => setState(() => progress = (progress + 0.05).clamp(0.0, 1.0))),
           ]),
-          const SizedBox(height: 18),
-          LinearProgressIndicator(value: progress, backgroundColor: Colors.white12, color: Colors.tealAccent),
-        ]),
+        ),
       ),
     );
   }
@@ -524,6 +734,7 @@ class Waveform extends StatelessWidget {
     );
   }
 }
+
 /// ADD THIS CLASS to lib/main.dart (place it before BreathingExercisePage)
 class ToolsPage extends StatelessWidget {
   @override
@@ -710,7 +921,7 @@ class StressReliefPage extends StatelessWidget {
           final a = stressActivities[i];
           return Card(
             color: Colors.white12,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             child: ListTile(
               title: Text(a['title']!, style: const TextStyle(color: Colors.white)),
               trailing: const Icon(Icons.chevron_right, color: Colors.white70),
@@ -762,7 +973,7 @@ class YouTubeSessionsPage extends StatelessWidget {
           final s = youtubeSessions[i];
           return Card(
             color: Colors.white12,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             child: ListTile(
               leading: Container(width: 60, height: 60, decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8)), image: DecorationImage(image: AssetImage('assets/images/relax_banner.png'), fit: BoxFit.cover))),
               title: Text(s['title']!, style: const TextStyle(color: Colors.white)),
@@ -788,26 +999,104 @@ class SleepMusicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientScaffold(
-      appBar: buildPremiumAppBar(context, isHome: false),
-      child: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemCount: sampleRelax.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (context, i) {
-          final s = sampleRelax[i];
-          return Card(
-            color: Colors.white12,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-            child: ListTile(
-              leading: Artwork(s.artwork, radius: 28),
-              title: Text(s.title, style: const TextStyle(color: Colors.white)),
-              subtitle: Text('${s.duration}  ·  ${s.subtitle}', style: const TextStyle(color: Colors.white70)),
-              trailing: IconButton(icon: const Icon(Icons.play_circle_fill, color: Colors.white70), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PlayerPage(s)))),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PlayerPage(s))),
+      child: SafeArea(
+        child: Column(
+          children: [
+            // ---------- HEADER (Back + Lotus) ----------
+           Padding(
+  padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+  child: Stack(
+    alignment: Alignment.center,
+    children: [
+      // Back button on the left
+      Align(
+        alignment: Alignment.centerLeft,
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+
+      // Lotus icon perfectly centered
+      const Icon(
+        Icons.spa,
+        color: Colors.white,
+        size: 28,
+      ),
+    ],
+  ),
+),
+
+
+            const SizedBox(height: 12),
+
+            // ---------- LIST ----------
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                itemCount: sampleSleep.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 14),
+                itemBuilder: (context, i) {
+                  final s = sampleSleep[i];
+                  return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
+                    decoration: BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Row(
+                      children: [
+                        // icon / artwork
+                        CircleAvatar(
+                          radius: 22,
+                          backgroundColor: Colors.white12,
+                          child: const Icon(Icons.music_note, color: Colors.white70),
+                        ),
+                        const SizedBox(width: 14),
+
+                        // text
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                s.title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${s.duration} · ${s.subtitle}',
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // play button
+                        IconButton(
+                          icon: const Icon(Icons.play_circle_fill, color: Colors.white70),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => PlayerPage(s)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
 }
+
